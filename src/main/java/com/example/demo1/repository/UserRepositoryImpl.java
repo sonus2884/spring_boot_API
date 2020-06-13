@@ -16,7 +16,7 @@ public class UserRepositoryImpl  implements UserRepository{
     @Override
     public User creatUser(User user) {
 
-        User createdUser = new User(user.getName(),user.getGender());
+        User createdUser = new User(user.getName(),user.getGender(),user.isDeleted());
         usersDatabase.add(createdUser);
         return createdUser;
     }
@@ -24,12 +24,52 @@ public class UserRepositoryImpl  implements UserRepository{
     @Override
     public Optional<User> getUserById(UUID id) {
 
-        return usersDatabase
+        Optional<User> tempUer = usersDatabase
                 .stream()
                 .filter(
                         user -> user.getUuid().equals(id)
                 ).findFirst();
 
 //        return null;
+        if(tempUer.isPresent()){
+            User user = tempUer.get();
+            if(user.isDeleted() == false)
+                return tempUer;
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean deleteUserById(UUID id) {
+            Optional<User> tempUser = usersDatabase.stream().filter(
+                    user -> user.getUuid().equals(id)
+            ).findFirst();
+            if(tempUser.isPresent()){
+                User user = tempUser.get();
+                user.setDeleted(true);
+                return true;
+            }
+        return false;
+    }
+
+    @Override
+    public User updateUserById(UUID id, User newUser) {
+        Optional<User> tempUser = usersDatabase.stream().filter(
+                user -> user.getUuid().equals(id)
+        ).findFirst();
+
+        if(tempUser.isPresent() && !tempUser.get().isDeleted()){
+
+            User user = tempUser.get();
+//            System.out.println(user);
+            user.setName(newUser.getName());
+            user.setGender(newUser.getGender());
+            user.setDeleted(newUser.isDeleted());
+
+            return user;
+        }
+
+        return null;
     }
 }

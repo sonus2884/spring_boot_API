@@ -29,4 +29,13 @@ public class UserService {
 
         return userRepository.getUserById(id);
     }
+
+    public User updateUserById(UUID id,User user){
+        return userRepository.updateUserById(id, user);
+    }
+
+    public boolean deleteUserById(UUID id){
+
+        return userRepository.deleteUserById(id);
+    }
 }

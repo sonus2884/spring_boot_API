@@ -11,4 +11,8 @@ public interface UserRepository {
     User creatUser(User user);
 
     Optional<User> getUserById(UUID id);
+
+    boolean deleteUserById(UUID id);
+
+    User updateUserById(UUID id, User user);
 }

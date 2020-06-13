@@ -38,4 +38,18 @@ public class UserController {
         }
         return new ResponseDto(HttpStatus.FOUND, userService.getUser(id));
     }
+    @PutMapping("/{id}")
+    public User updateUserById(@PathVariable(name = "id") UUID id, @RequestBody User user){
+
+        if(userService !=null)
+            userService.updateUserById(id,user);
+        return null;
+
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean deleteUerById(@PathVariable(name = "id") UUID id){
+
+        return userService.deleteUserById(id);
+    }
 }
